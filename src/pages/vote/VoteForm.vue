@@ -136,82 +136,82 @@
 </template>
 
 <script>
-  export default {
-    name: "VoteForm",
-    data() {
-      return {
-        alertSucShow: false,
-        alertErrShow: false,
-        alertShow: false,
-        Vote: {
-          subjectName: '',
-          optionNames: [],
-          type: '',
-          beginTime: Date,
-          endTime: Date
+    export default {
+        name: "VoteForm",
+        data() {
+            return {
+                alertSucShow: false,
+                alertErrShow: false,
+                alertShow: false,
+                Vote: {
+                    subjectName: '',
+                    optionNames: [],
+                    type: '',
+                    beginTime: Date,
+                    endTime: Date,
+                },
+                date: new Date().toISOString().substr(0, 10),
+                date2: new Date().toISOString().substr(0, 10),
+                menu: false,
+                menu2: false,
+                addBtnTop: 190,
+                deleteBtnTop: 190,
+                deleteBtnTopStyle: [190],
+                optionNames: [''],
+                dark: false,
+                select: {key: 1, value: '单选'},
+                items: [
+                    {
+                        key: 1,
+                        value: '单选'
+                    },
+                    {
+                        key: 2,
+                        value: '多选'
+                    }
+                ],
+                rules: {
+                    required: value => !!value || '不能为空',
+                },
+            }
         },
-        date: new Date().toISOString().substr(0, 10),
-        date2: new Date().toISOString().substr(0, 10),
-        menu: false,
-        menu2: false,
-        addBtnTop: 190,
-        deleteBtnTop: 190,
-        deleteBtnTopStyle: [190],
-        optionNames: [''],
-        dark: false,
-        select: {key: 1, value: '单选'},
-        items: [
-          {
-            key: 1,
-            value: '单选'
-          },
-          {
-            key: 2,
-            value: '多选'
-          }
-        ],
-        rules: {
-          required: value => !!value || '不能为空',
+        methods: {
+            insertVote() {
+                this.Vote.optionNames = this.optionNames
+                this.Vote.type = this.select.key;
+                this.Vote.beginTime = this.date;
+                this.Vote.endTime = this.date2;
+                this.axios({
+                    url: 'http://api.vote.com/vi_insertVote',
+                    method: 'post',
+                    data: this.Vote
+                }).then(msg => {
+                    this.alertShow = true;
+                    this.alertSucShow = true;
+                    this.show = false;
+                }).catch(msg => {
+                    this.$router.push({path: '/'})
+                })
+            },
+            insertNewLine() {
+                console.log(this.$refs.addBtn.style);
+                this.deleteBtnTopStyle.push(this.deleteBtnTop += 68);
+                this.addBtnTop += 68;
+                this.optionNames.push("");
+            },
+            deleteNewLine(i) {
+                this.addBtnTop -= 68;
+                this.deleteBtnTop -= 68;
+                this.deleteBtnTopStyle.splice(i, 1);
+                this.optionNames.splice(i, 1);
+            },
+            allowedDates: val => {
+                let date = new Date();
+                console.log(date.getDay());
+                return parseInt(val.split('-')[2], 10) >= date.getDay();
+            }
         },
-      }
-    },
-    methods: {
-      insertVote() {
-        this.Vote.optionNames = this.optionNames
-        this.Vote.type = this.select.key;
-        this.Vote.beginTime = this.date;
-        this.Vote.endTime = this.date2;
-        this.axios({
-          url: 'http://api.vote.com/vote/insertVote',
-          method: 'post',
-          data: this.Vote
-        }).then(msg => {
-          this.alertShow = true;
-          this.alertSucShow = true;
-          this.show = false;
-        }).catch(msg => {
-          this.$router.push({path: '/'})
-        })
-      },
-      insertNewLine() {
-        console.log(this.$refs.addBtn.style);
-        this.deleteBtnTopStyle.push(this.deleteBtnTop += 68);
-        this.addBtnTop += 68;
-        this.optionNames.push("");
-      },
-      deleteNewLine(i) {
-        this.addBtnTop -= 68;
-        this.deleteBtnTop -= 68;
-        this.deleteBtnTopStyle.splice(i, 1);
-        this.optionNames.splice(i, 1);
-      },
-      allowedDates : val => {
-        let date = new Date();
-        console.log(date.getDay());
-        return parseInt(val.split('-')[2], 10) >= date.getDay();
-      }
-    },
-  }
+    }
 </script>
 
 <style scoped>

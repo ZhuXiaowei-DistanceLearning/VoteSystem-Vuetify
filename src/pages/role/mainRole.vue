@@ -113,13 +113,13 @@
     },
     data() {
       return {
-        valid:true,
+        valid: true,
         newForm: [],
         rules: {
           required: value => !!value || "不能为空",
         },
-        menu:false,
-        menu2:false,
+        menu: false,
+        menu2: false,
         items: [
           {
             key: 1,
@@ -166,7 +166,7 @@
       closeWindow() {
         this.$emit("close");
       },
-      allowedDates : val => {
+      allowedDates: val => {
         let date = new Date();
         console.log(date.getDay());
         return parseInt(val.split('-')[2], 10) >= date.getDay();

@@ -94,7 +94,7 @@
       let d = new Date();
       let date = d.getHours() + ":" + d.getMinutes();
       this.time = date;
-      this.axios.get("http://api.vote.com/verify").then(msg => {
+      this.axios.get("http://api.vote.com/user_verify").then(msg => {
         if (msg.data != "error" || msg == null) {
           this.UserInfo.name = msg.data.username;
           this.UserInfo.id = msg.data.id;

@@ -182,7 +182,7 @@
       // this.menuMap = menus;
       this.axios({
         method:"get",
-        url:"http://api.vote.com/findMenu"
+        url:"http://api.vote.com/user_findMenu"
       }).then( msg =>{
         console.log(menus);
         console.log("----------");

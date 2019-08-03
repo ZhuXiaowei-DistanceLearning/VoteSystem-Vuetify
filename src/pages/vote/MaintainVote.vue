@@ -33,7 +33,7 @@
               <td>
                 <v-switch color="primary" style="margin-top: 30px" :value="props.item.subjectId"
                           v-model="sBtn"
-                          :disabled="props.item.subject.endTime.split('-')[2] < new Date().getDate()?true:false||props.item.subject.total != 0 ?true:false"
+                          :disabled="props.item.subject.endTime.split('-')[1] < new Date().getMonth()+1?true:false || props.item.subject.endTime.split('-')[2] < new Date().getDate()?true:false||props.item.subject.total != 0 ?true:false"
                           @click="mainChange(props.item.subjectId)"></v-switch>
               </td>
               <td class="text-xs-center">
@@ -41,7 +41,7 @@
                   round
                   color="info"
                   dark
-                  v-if="sBtn.indexOf(props.item.subjectId)== -1 ?false:true"
+                  v-if="sBtn.includes(props.item.subjectId)?true:false"
                   @click="mainVote(props.item.subjectId,props.item.userId)"
                 >
                   维护
@@ -148,7 +148,7 @@
     },
     methods: {
       getDataFromApi() {
-        this.axios.get('http://api.vote.com/vote/querySubjectByUser', {
+        this.axios.get('http://api.vote.com/us_querySubjectByUser', {
           params: {
             page: this.pagination.page, // 当前页
             rows: this.pagination.rows, // 每页大小
@@ -157,6 +157,7 @@
             search: this.search // 搜索条件
           }
         }).then(msg => {
+          console.log(msg.data)
           this.items = msg.data;
           this.loading = false;
           let d = new Date().getDay();
@@ -201,14 +202,14 @@
               this.items[i].status = '维护中'
               this.axios({
                 method: 'get',
-                url: 'http://api.vote.com/vote/updateOptionStatus',
+                url: 'http://api.vote.com/us_updateOptionStatus',
                 params: {subjectId: msg, status: 1}
               })
             } else if (this.items[i].status = '维护中') {
               this.items[i].status = '正在投票'
               this.axios({
                 method: 'get',
-                url: 'http://api.vote.com/vote/updateOptionStatus',
+                url: 'http://api.vote.com/us_updateOptionStatus',
                 params: {subjectId: msg, status: 0}
               })
             }
@@ -219,7 +220,7 @@
       mainVote(subjectId, userId) {
         this.axios({
           method: 'get',
-          url: 'http://api.vote.com/vote/mainVote',
+          url: 'http://api.vote.com/mv_mainVote',
           params: {subjectId: subjectId, userId: userId},
         }).then(msg => {
           this.EditShow = true;

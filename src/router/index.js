@@ -28,7 +28,8 @@ export default new VueRouter({
         route("/vote/pubVote","/vote/PubVote","PubVote"),
         route("/vote/findAll","/vote/Vote","Vote"),
         route("/vote/vote","/vote/Voting","Voting"),
-        route("/role/findAll","/role/Role","Role"),
+        route("/role/mainRole","/role/mainRole","mainRole"),
+        route("/role/maintainRole","/role/MaintainRole","MaintainRole"),
       ]
     }
   ]

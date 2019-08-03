@@ -200,7 +200,7 @@
     },
     methods: {
       getDataFromApi() {
-        this.axios.get('http://api.vote.com/vote/findAll', {
+        this.axios.get('http://api.vote.com/us_findAll', {
           params: {
             page: this.pagination.page, // 当前页
             rows: this.pagination.rows, // 每页大小
@@ -212,6 +212,7 @@
           this.items = msg.data;
           this.loading = false;
           for (let i = 0; i < this.items.length; i++) {
+          console.log(this.items[i][9])
             if (this.items[i].status == 0) {
               if (this.items[i].subject.beginTime.split('-')[1] > new Date().getMonth() + 1) {
                 this.items[i]['Stype'] = false;
@@ -244,7 +245,7 @@
       },
       voting(id) {
         this.axios({
-          url: 'http://api.vote.com/vote/voting?id=' + id,
+          url: 'http://api.vote.com/op_voting?id=' + id,
         }).then(msg => {
           this.options = msg.data;
           this.show = true;
@@ -258,7 +259,7 @@
       insertItem() {
         console.log(this.radios)
         this.axios({
-          url: 'http://api.vote.com/vote/insertItem',
+          url: 'http://api.vote.com/us_insertItem',
           method: 'post',
           data: this.qs.stringify({radios: this.optionId, subjectId: this.subjectId})
         }).then(msg => {
@@ -281,7 +282,7 @@
       },
       queryResult(subjectId) {
         this.axios({
-          url: 'http://api.vote.com/vote/queryResult',
+          url: 'http://api.vote.com/ui_queryResult',
           params: {subjectId: subjectId}
         }).then(msg => {
             this.voteR = true;
